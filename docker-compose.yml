@@ -3,6 +3,7 @@ version: '3'
 services:
   app:
     build: .
+    command: [ "uvicorn", "instapi.main:app", "--host", "0.0.0.0", "--reload" ]
     volumes:
       - ./:/app
     labels:

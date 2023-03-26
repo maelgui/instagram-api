@@ -23,7 +23,7 @@ async def init():
     return RedirectResponse(url=url)
 
 @app.get("/callback")
-async def callback(code: str | None = None):
+async def callback(code: str):
     redirect_uri = app.url_path_for("callback").make_absolute_url(settings.base_url)
 
     short_access_token = instagram.get_token(code, redirect_uri)
