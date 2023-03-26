@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    volumes:
+      - ./:/app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`localhost`)"
+      - "traefik.http.routers.app.entrypoints=web-secure"
+      - "traefik.http.routers.app.tls=true"
+      - "traefik.http.middlewares.apikeyHeader.headers.customrequestheaders.X-Key=test"
+      - "traefik.http.routers.app.middlewares=apikeyHeader@docker"
+    env_file:
+      - .env
+
+  traefik:
+    image: "traefik:v2.9"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web-secure.address=:443"
+    ports:
+      - "80:80"
+      - 443:443
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
