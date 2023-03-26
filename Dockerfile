@@ -8,6 +8,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD [ "uvicorn", "instapi.main:app", "--host", "0.0.0.0", "--reload", "--proxy-headers" ]
+CMD [ "uvicorn", "instapi.main:app", "--host", "0.0.0.0" ]
 
 EXPOSE 8000
