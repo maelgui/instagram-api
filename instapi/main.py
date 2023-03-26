@@ -5,9 +5,9 @@ from instapi import instagram, token
 from instapi.config import settings
 from instapi.dependencies import verify_key
 
-app = FastAPI(dependencies=[Depends(verify_key)])
+app = FastAPI()
 
-@app.get("/")
+@app.get("/", dependencies=[Depends(verify_key)])
 async def root():
     access_token = token.load_token()
     refreshed_access_token = instagram.refresh_token(access_token)
@@ -15,7 +15,7 @@ async def root():
 
     return instagram.get_last_post(refreshed_access_token)
 
-@app.get("/init")
+@app.get("/init", dependencies=[Depends(verify_key)])
 async def init():
     app_id = settings.instagram_app_id
     redirect_uri = app.url_path_for("callback").make_absolute_url(settings.base_url)
