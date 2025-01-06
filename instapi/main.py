@@ -1,4 +1,5 @@
-from fastapi import Depends, FastAPI
+from typing import Annotated
+from fastapi import Depends, FastAPI, Query, Request
 from fastapi.responses import RedirectResponse
 
 from instapi import instagram, token
@@ -19,7 +20,7 @@ async def root():
 async def init():
     app_id = settings.instagram_app_id
     redirect_uri = app.url_path_for("callback").make_absolute_url(settings.base_url)
-    url = f"https://api.instagram.com/oauth/authorize?client_id={app_id}&redirect_uri={redirect_uri}&scope=user_profile,user_media&response_type=code"
+    url = f"https://www.facebook.com/dialog/oauth?client_id={app_id}&display=page&redirect_uri={redirect_uri}&response_type=code&scope=instagram_basic,public_profile"
     return RedirectResponse(url=url)
 
 @app.get("/callback")
